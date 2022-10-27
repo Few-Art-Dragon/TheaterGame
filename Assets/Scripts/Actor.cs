@@ -6,11 +6,12 @@ using UnityEngine.Events;
 public class Actor : MonoBehaviour
 {
     [HideInInspector]
-    public UnityEvent MoveSwordOnTargetPositionEvent;
+    public UnityEvent MoveSwordOnTargetPositionEvent = new UnityEvent();
 
     [HideInInspector]
-    public UnityEvent<Vector3, Vector3> GetBaseAndTargetPositionEvent;
+    public UnityEvent<Vector3, Vector3> GetBaseAndTargetPositionEvent =  new UnityEvent<Vector3, Vector3>();
 
+    public SwordBehavior SwordState;
 
     protected Vector3 _basePosition;
     protected Vector3 _targetPosition;
@@ -19,16 +20,13 @@ public class Actor : MonoBehaviour
 
     [SerializeField]
     protected float _speedMoveSword;
-    public enum SwordBehavior
-    {
-        Up = -1,
-        Middle = 0,
-        Down = 1,
-    }
+    
+
+
 
     protected void StartGetKindHitEvent()
     {
-        Referee.GetKindHitEvent.Invoke(this.gameObject);
+        BattleAccountant.GetKindHitEvent.Invoke(this);
     }
 
     protected void GetAndSetPositionSword(Vector3 basePosition, Vector3 targetPosition)
@@ -43,4 +41,10 @@ public class Actor : MonoBehaviour
       return Vector3.Lerp(gameObject.transform.position, targetPosition, _speedMoveSword * Time.deltaTime);
     }
 
+}
+public enum SwordBehavior
+{
+    Up = -1,
+    Middle = 0,
+    Down = 1,
 }

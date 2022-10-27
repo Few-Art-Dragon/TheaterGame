@@ -14,44 +14,33 @@ public class Enemy : Actor
         StartCoroutine("IStartMoveSword", _targetPosition);
     }
 
-
-
-    private void SetStandartParam()
-    {
-        _healthActor = 3;
-
-        swordBehavior = SwordBehavior.Middle;
-        
-    }
-
-    private void StartStandartFunctions()
-    {
-        StartGetKindHitEvent();
-    }
-
     private void Awake()
     {
         
     }
     private void OnEnable()
     {
-        MoveSwordOnTargetPositionEvent = new UnityEvent();
         MoveSwordOnTargetPositionEvent.AddListener(StartCoroutineMoveUpSword);
     }
 
     private void Start()
     {
-        SetStandartParam();
-        StartStandartFunctions();
-        
+        _healthActor = 3;
+
+        swordBehavior = SwordBehavior.Middle;
+
+        StartGetKindHitEvent();
+
     }
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I)) 
-        {
-            Referee.GetKindHitEvent.Invoke(this.gameObject);
-        }
+
+    }
+
+    private void OnDisable()
+    {
+        MoveSwordOnTargetPositionEvent.RemoveListener(StartCoroutineMoveUpSword);
     }
 
     IEnumerator IStartMoveSword(Vector3 targetPosition)

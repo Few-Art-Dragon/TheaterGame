@@ -28,17 +28,14 @@ public class Player : Actor
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             _swordBehavior = SwordBehavior.Up;
-            StartGetKindHitEvent();
         }
         else if (Input.GetKeyDown(KeyCode.Keypad2))
         {
             _swordBehavior = SwordBehavior.Middle;
-            StartGetKindHitEvent();
         }
         else if (Input.GetKeyDown(KeyCode.Keypad3))
         {
             _swordBehavior = SwordBehavior.Down;
-            StartGetKindHitEvent();
         }
     }
 
@@ -52,31 +49,24 @@ public class Player : Actor
     {
         StartCoroutine("IStartMoveSword", _basePosition);
     }
-    private void SetStandartParam()
+    private void OnEnable()
     {
-        _healthActor = 3;
-
-        _swordBehavior = SwordBehavior.Middle;
+        GetBaseAndTargetPositionEvent.AddListener(GetAndSetPositionSword);
+        MoveSwordOnTargetPositionEvent.AddListener(StartCoroutineMoveUpSword);
     }
-
-    private void StartStandartFunctions()
-    {
-
-    }
-
     private void Awake()
     {
-        GetBaseAndTargetPositionEvent = new UnityEvent<Vector3, Vector3>();
-        GetBaseAndTargetPositionEvent.AddListener(GetAndSetPositionSword);
-
-        MoveSwordOnTargetPositionEvent = new UnityEvent();
-        MoveSwordOnTargetPositionEvent.AddListener(StartCoroutineMoveUpSword);
+        
+        
     }
 
     private void Start()
     {
-        SetStandartParam();
-        StartStandartFunctions();
+        _healthActor = 3;
+
+        _swordBehavior = SwordBehavior.Middle;
+
+        StartGetKindHitEvent();
     }
 
     private void Update()
@@ -87,7 +77,6 @@ public class Player : Actor
     private void OnDisable()
     {
         MoveSwordOnTargetPositionEvent.RemoveListener(StartCoroutineMoveUpSword);
-
     }
 
     IEnumerator IStartMoveSword(Vector3 targetPosition)
