@@ -124,7 +124,7 @@ public class BattleAccountant: MonoBehaviour
 
         for (int i = 0; i < _listSwords.Count; i++)
         {
-            _listSwords[i].GetComponent<Player>().MoveSwordOnTargetPositionEvent.Invoke();
+            _listSwords[i].GetComponent<Actor>().MoveSwordOnTargetPositionEvent.Invoke();
         }
 
     }

@@ -11,7 +11,12 @@ public class Actor : MonoBehaviour
     [HideInInspector]
     public UnityEvent<Vector3, Vector3> GetBaseAndTargetPositionEvent =  new UnityEvent<Vector3, Vector3>();
 
+    [HideInInspector]
+    public UnityEvent CheckHealthEvent = new UnityEvent();
+
     public SwordBehavior SwordState;
+
+    protected HealthImages _healthImages;
 
     protected Vector3 _basePosition;
     protected Vector3 _targetPosition;
@@ -21,9 +26,6 @@ public class Actor : MonoBehaviour
     [SerializeField]
     protected float _speedMoveSword;
     
-
-
-
     protected void StartGetKindHitEvent()
     {
         BattleAccountant.GetKindHitEvent.Invoke(this);
@@ -34,6 +36,20 @@ public class Actor : MonoBehaviour
         _basePosition = basePosition;
         transform.position = _basePosition;
         _targetPosition = targetPosition;
+    }
+
+    protected void MinusHealth()
+    {
+        _healthActor -= 1;
+        _healthImages.OnDisableHealthSprite.Invoke();
+    }
+
+    protected void CheckHealth()
+    {
+        if (_healthActor > 0) 
+        {
+            MinusHealth();
+        }
     }
 
     protected Vector3 MoveSword(Vector3 targetPosition)

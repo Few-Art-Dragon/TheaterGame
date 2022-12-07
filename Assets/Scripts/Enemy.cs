@@ -20,11 +20,15 @@ public class Enemy : Actor
     }
     private void OnEnable()
     {
+        CheckHealthEvent.AddListener(CheckHealth);
+        GetBaseAndTargetPositionEvent.AddListener(GetAndSetPositionSword);
         MoveSwordOnTargetPositionEvent.AddListener(StartCoroutineMoveUpSword);
     }
 
     private void Start()
     {
+        _healthImages = GetComponent<HealthImages>();
+
         _healthActor = 3;
 
         swordBehavior = SwordBehavior.Middle;
@@ -40,6 +44,8 @@ public class Enemy : Actor
 
     private void OnDisable()
     {
+        CheckHealthEvent.RemoveListener(CheckHealth);
+        GetBaseAndTargetPositionEvent.RemoveListener(GetAndSetPositionSword);
         MoveSwordOnTargetPositionEvent.RemoveListener(StartCoroutineMoveUpSword);
     }
 

@@ -27,6 +27,7 @@ public class Player : Actor
     {
         if (Input.GetKeyDown(KeyCode.Keypad1))
         {
+            _healthImages.OnDisableHealthSprite.Invoke();
             _swordBehavior = SwordBehavior.Up;
         }
         else if (Input.GetKeyDown(KeyCode.Keypad2))
@@ -51,6 +52,7 @@ public class Player : Actor
     }
     private void OnEnable()
     {
+        CheckHealthEvent.AddListener(CheckHealth);
         GetBaseAndTargetPositionEvent.AddListener(GetAndSetPositionSword);
         MoveSwordOnTargetPositionEvent.AddListener(StartCoroutineMoveUpSword);
     }
@@ -62,6 +64,8 @@ public class Player : Actor
 
     private void Start()
     {
+        _healthImages = GetComponent<HealthImages>();
+
         _healthActor = 3;
 
         _swordBehavior = SwordBehavior.Middle;
@@ -76,6 +80,8 @@ public class Player : Actor
 
     private void OnDisable()
     {
+        CheckHealthEvent.RemoveListener(CheckHealth);
+        GetBaseAndTargetPositionEvent.RemoveListener(GetAndSetPositionSword);
         MoveSwordOnTargetPositionEvent.RemoveListener(StartCoroutineMoveUpSword);
     }
 

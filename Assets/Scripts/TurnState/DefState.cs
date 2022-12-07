@@ -9,7 +9,7 @@ public class DefState : ITurnState
     {
         if (player.SwordState != enemy.SwordState)
         {
-            //_player.Health -= 1;
+            player.CheckHealthEvent.Invoke();
         }
     }
 }
